@@ -239,7 +239,7 @@ prog make
 	  file write `readmefile' "_v. `version'_  " _n(2)
 	}
 	
-	file write `readmefile' "`" "`anything'" "` "
+	file write `readmefile' "`" "`anything'" "' "
 	if !missing("`title'") {
 		file write `readmefile' ": `title'"
 	}
