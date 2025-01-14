@@ -85,20 +85,20 @@ prog make
 	
 	syntax [anything] [,      ///
 	        toc               ///
-					pkg               ///
-					readme            ///
-					replace           ///
-					title(str)        ///
-					Version(str)      /// 
-					Description(str)  ///
-					license(str)      ///
-					AUThor(str)       ///
-					affiliation(str)  ///
-					url(str)          ///
-					email(str)        ///
+			pkg               ///
+			readme            ///
+			replace           ///
+			title(str)        ///
+			Version(str)      /// 
+			Description(str)  ///
+			license(str)      ///
+			AUThor(str)       ///
+			affiliation(str)  ///
+			url(str)          ///
+			email(str)        ///
 	        ancillary(str)    ///
 	        install(str)      ///
-				 ]
+			]
 	
 
 	//title of the package
@@ -115,22 +115,29 @@ prog make
 	if !missing("`version'") {
 		file write `tocfile' "v `version'" _n 
 	}
-	if !missing("`author'") {
-		file write `tocfile' "d Materials by `author'" _n 
-	}
-	
+	if !missing(`"`author'"') {
+        local n_authors : word count `author'
+        if (`n_authors' > 1) local s "s"
+		file write `tocfile' "d Author`s':" _n 
+        display `n_authors'
 
-	if !missing("`affiliation'") {
-		file write `tocfile' "d `affiliation'" _n 
+        forvalues i = 1/`n_authors' {
+            
+            local aut: word `i' of `author'
+            local ins: word `i' of `affiliation'
+            local ema: word `i' of `email'
+            
+            if !missing(`"`ins'"') local ins = `", `ins'"'
+            if !missing(`"`ema'"') local ema = `" (`ema')"'
+
+            file write `tocfile'  `"d  -- `aut'`ins'`ema'"' _n
+        } 
 	}
-	if !missing("`email'") {
-		file write `tocfile' "d `email'" _n 
-	}
+
 	if !missing("`url'") {
 		file write `tocfile' "d `url'" _n 
 	}
 
-	
 	file write `tocfile' _n
 	
 	*file write `tocfile' "d '`capital''" _n(2) 
